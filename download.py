@@ -10,9 +10,10 @@ os.makedirs("./images", exist_ok=True)
 with open("output_all.txt", "r") as file:
     lines = [line.strip() for line in file]
 
+    driver = webdriver.Chrome()
+
     for index, line in enumerate(lines):
         try:
-            driver = webdriver.Chrome()
             driver.get(line)
             driver.implicitly_wait(0)
             img_url = (
@@ -24,8 +25,10 @@ with open("output_all.txt", "r") as file:
             filepath = "./images/" + img_url.split("/")[-1]
             if not os.path.exists(filepath):
                 urllib.request.urlretrieve(img_url, filepath)
-            driver.close()
+           
         except:
             err_cnt += 1
         finally:
             print(str(index) + " / " + str(len(lines)) + " | " + str(err_cnt) + " errors")
+
+    driver.close()
